@@ -1,0 +1,30 @@
+import requests
+import socket
+import platform
+from tkinter import Tk, Label
+
+def get_system_info():
+    ip = requests.get('https://api.ipify.org').text
+    response = requests.get(f'https://ipapi.co/{ip}/json/').json()
+    country = response.get('country_name', 'Unknown')
+    return ip, country
+
+def create_window(ip, country, photo_url):
+    root = Tk()
+    root.title("System Information")
+    root.geometry("600x400")
+    root.configure(bg='red')
+
+    label = Label(root, text=f"IP: {ip}\nCountry: {country}", bg='red', fg='white', font=("Helvetica", 16))
+    label.pack(expand=True)
+
+    photo_label = Label(root)
+    photo_label.pack(expand=True)
+    photo_label.config(text=photo_url)
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    ip, country = get_system_info()
+    photo_url = "https://i.ytimg.com/vi/xbaiTLSIb2I/hqdefault.jpg"  
+    create_window(ip, country, photo_url)
